@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Fotos - XV Años Clara Susana</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/selector.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="main-title">Clara Susana Palomares Torres</h1>
+        <p class="subtitle">XV Años</p>
+        <p class="instructions">Selecciona las fotos para impresión</p>
+    </header>
+
+    <div class="nav-links" style="display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
+        <a href="index.html" style="display: inline-block; background: #ff69b4; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none;"><i class="fas fa-envelope"></i> Invitación</a>
+        <a href="contrato.html" style="display: inline-block; background: #ff69b4; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none;"><i class="fas fa-file-contract"></i> Contrato</a>
+        <a href="logistica.html" style="display: inline-block; background: #ff69b4; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none;"><i class="fas fa-clipboard-list"></i> Logística</a>
+        <a href="selector.html" style="display: inline-block; background: #d946a8; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none;"><i class="fas fa-images"></i> Fotos</a>
+    </div>
+
+    <div class="container">
+        <!-- Mensaje de Pendiente -->
+        <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); border: 2px dashed #ff9800; border-radius: 15px; padding: 40px; text-align: center; margin: 30px 0;">
+            <i class="fas fa-camera" style="font-size: 4rem; color: #ff9800; margin-bottom: 20px; display: block;"></i>
+            <h2 style="color: #e65100; margin-bottom: 15px;">Selector de Fotos</h2>
+            <p style="color: #666; font-size: 1.1rem; margin-bottom: 20px;">
+                Las fotos del evento estarán disponibles después del <strong>28 de marzo de 2026</strong>.
+            </p>
+            <p style="color: #666;">
+                Una vez realizado el evento, aquí podrás seleccionar las fotos que deseas imprimir del paquete contratado.
+            </p>
+            <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 10px; display: inline-block;">
+                <p style="color: #ff69b4; font-weight: bold; margin-bottom: 10px;">Tu paquete incluye:</p>
+                <p style="color: #333;"><i class="fas fa-images" style="color: #ff69b4;"></i> 200 fotos impresas 5x7"</p>
+                <p style="color: #666; font-size: 0.9rem;"><em>o</em></p>
+                <p style="color: #333;"><i class="fas fa-book" style="color: #ff69b4;"></i> 1 Fotolibro 30x60 con 100 fotos</p>
+            </div>
+        </div>
+
+        <!-- Control Panel (oculto hasta que haya fotos) -->
+        <div class="control-panel" style="display: none;">
+            <div class="stats-row">
+                <div class="stat-card impresion">
+                    <span class="stat-icon">📸</span>
+                    <div class="stat-info">
+                        <h3>Impresión</h3>
+                        <span class="stat-count" id="countImpresion">0/200</span>
+                    </div>
+                </div>
+                <div class="stat-card invitacion">
+                    <span class="stat-icon">💌</span>
+                    <div class="stat-info">
+                        <h3>Invitación</h3>
+                        <span class="stat-count" id="countInvitacion">0</span>
+                    </div>
+                </div>
+                <div class="stat-card descartada">
+                    <span class="stat-icon">❌</span>
+                    <div class="stat-info">
+                        <h3>Descartadas</h3>
+                        <span class="stat-count" id="countDescartada">0</span>
+                    </div>
+                </div>
+                <div class="stat-card sin-clasificar">
+                    <span class="stat-icon">⭕</span>
+                    <div class="stat-info">
+                        <h3>Sin Clasificar</h3>
+                        <span class="stat-count" id="countSinClasificar">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-filter active" id="btnFilterAll" data-filter="all">Todas</button>
+                <button class="btn btn-filter filter-impresion" id="btnFilterImpresion" data-filter="impresion">Impresión</button>
+                <button class="btn btn-filter filter-invitacion" id="btnFilterInvitacion" data-filter="invitacion">Invitación</button>
+                <button class="btn btn-filter filter-descartada" id="btnFilterDescartada" data-filter="descartada">Descartadas</button>
+                <button class="btn btn-filter filter-sin-clasificar" id="btnFilterSinClasificar" data-filter="sin-clasificar">Sin Clasificar</button>
+            </div>
+
+            <div class="action-buttons secondary">
+                <button class="btn btn-export" id="btnExport"><i class="fas fa-download"></i> Descargar Reporte</button>
+                <button class="btn btn-share" id="btnShare"><i class="fas fa-copy"></i> Copiar Resumen</button>
+                <button class="btn btn-clear" id="btnClear"><i class="fas fa-trash"></i> Limpiar Todo</button>
+            </div>
+        </div>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" style="display: none;">
+            <div class="photos-grid" id="photosGrid">
+                <!-- Photos will be loaded here by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <button class="modal-nav-btn modal-prev" id="btnPrevPhoto">&#10094;</button>
+            <button class="modal-nav-btn modal-next" id="btnNextPhoto">&#10095;</button>
+
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modalImage" src="" alt="Foto seleccionada">
+                    <div class="modal-photo-number" id="modalPhotoNumber"></div>
+                </div>
+
+                <div class="modal-options">
+                    <h3>Clasificar esta foto</h3>
+                    <p class="modal-subtitle">Selecciona las categorías para esta imagen</p>
+
+                    <div class="option-buttons">
+                        <button class="option-btn impresion" data-category="impresion">
+                            <span class="option-icon">📸</span>
+                            <span class="option-text">Impresión (5x7)</span>
+                            <span class="option-check">✓</span>
+                        </button>
+
+                        <button class="option-btn invitacion" data-category="invitacion">
+                            <span class="option-icon">💌</span>
+                            <span class="option-text">Para Invitación</span>
+                            <span class="option-check">✓</span>
+                        </button>
+
+                        <button class="option-btn descartada" data-category="descartada">
+                            <span class="option-icon">❌</span>
+                            <span class="option-text">Descartar</span>
+                            <span class="option-check">✓</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn btn-cancel" id="btnCancelSelection">Cancelar</button>
+                        <button class="btn btn-save" id="btnSaveSelection">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/selector.js"></script>
+</body>
+</html>
