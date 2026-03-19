@@ -15,16 +15,16 @@
         }
 
         :root {
-            --pink: #ff69b4;
-            --pink-light: #ffb6d9;
-            --pink-dark: #d946a8;
+            --pink: #dc2626;
+            --pink-light: #fca5a5;
+            --pink-dark: #991b1b;
             --gold: #d4af37;
             --cream: #faf8f3;
         }
 
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
@@ -160,7 +160,7 @@
         }
 
         .location-card {
-            background: linear-gradient(135deg, #fff8fa, #fce4ec);
+            background: linear-gradient(135deg, #fff5f5, #fee2e2);
             padding: 15px;
             border-radius: 10px;
             margin-top: 15px;
@@ -199,7 +199,7 @@
         }
 
         .checklist li:hover {
-            background: #fce4ec;
+            background: #fee2e2;
             transform: translateX(5px);
         }
 
@@ -373,30 +373,61 @@
 
             <div class="timeline">
                 <div class="timeline-item">
-                    <span class="time-badge">Hora Pendiente</span>
+                    <span class="time-badge">2:00 PM</span>
                     <div class="timeline-content">
                         <h3><i class="fas fa-church"></i> Misa de Acción de Gracias</h3>
                         <p><strong>Fecha:</strong> Sábado 28 de Marzo, 2026</p>
-                        <p><strong>Hora:</strong> Pendiente de confirmar</p>
+                        <p><strong>Hora:</strong> 2:00 PM</p>
                         <div class="location-card">
-                            <h4><i class="fas fa-map-marker-alt"></i> Parroquia del Señor del Perdón de Ibarrilla</h4>
-                            <p>Cam. A Ibarrilla 107, 37207 Ibarrilla, Gto.</p>
-                            <a href="https://maps.app.goo.gl/fAcE6C37FMX77Kob9" target="_blank">Ver en Google Maps</a>
+                            <h4><i class="fas fa-map-marker-alt"></i> Quinta Las Palmas — Bulevar Ibarrilla</h4>
                         </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <span class="time-badge">Hora Pendiente</span>
+                    <span class="time-badge">4:00 PM</span>
                     <div class="timeline-content">
                         <h3><i class="fas fa-glass-cheers"></i> Recepción y Fiesta</h3>
                         <p><strong>Fecha:</strong> Sábado 28 de Marzo, 2026</p>
-                        <p><strong>Cobertura:</strong> 8 horas de recepción</p>
+                        <p><strong>Horario:</strong> 4:00 PM – 2:00 AM</p>
                         <div class="location-card">
                             <h4><i class="fas fa-map-marker-alt"></i> Salón</h4>
                             <p>Canal de Sardaneta 204, Valle de los Castillos Poniente, 37660 León de los Aldama, Gto.</p>
                             <a href="https://maps.app.goo.gl/ZjYXgkmE3zx4i8hA8" target="_blank">Ver en Google Maps</a>
                         </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="time-badge">4:30 PM</span>
+                    <div class="timeline-content">
+                        <h3><i class="fas fa-utensils"></i> Comida</h3>
+                        <p>4:30 PM – 6:30 PM</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="time-badge">7:00 PM</span>
+                    <div class="timeline-content">
+                        <h3><i class="fas fa-music"></i> Vals</h3>
+                        <p>Hora del vals: 7:00 PM</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="time-badge">9:00 PM</span>
+                    <div class="timeline-content">
+                        <h3><i class="fas fa-star"></i> Mariachis (Sorpresa especial)</h3>
+                        <p>9:00 PM – 10:00 PM</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="time-badge">10:00 PM</span>
+                    <div class="timeline-content">
+                        <h3><i class="fas fa-guitar"></i> Grupo en Vivo</h3>
+                        <p>10:00 PM – 2:00 AM</p>
+                        <p><em>DJ cubre de 4:00 PM a 9:00 PM</em></p>
                     </div>
                 </div>
             </div>
@@ -405,11 +436,12 @@
         <!-- Sesión Fotográfica Previa -->
         <div class="section">
             <h2><i class="fas fa-camera-retro"></i> Sesión Fotográfica Previa</h2>
-            <div class="pending-notice">
-                <i class="fas fa-info-circle"></i>
-                <strong>Pendiente de Programar</strong>
-                <p>La sesión fotográfica se realizará cuando Clara tenga el vestido y todos los accesorios listos.</p>
-                <p>Se coordinará la fecha y ubicación directamente con la familia.</p>
+            <div class="important-note">
+                <h3><i class="fas fa-check-circle"></i> Sesión Confirmada</h3>
+                <p><strong>Fecha:</strong> Martes 17 de Marzo, 2026</p>
+                <p><strong>Hora:</strong> 4:00 PM</p>
+                <p><strong>Lugar:</strong> Explora (Forum Cultural), León, Gto.</p>
+                <p><strong>Participantes:</strong> Clara Susana con chambelán</p>
             </div>
 
             <div class="important-note">
@@ -450,8 +482,8 @@
             <p style="margin-bottom: 15px; color: #666;">Los siguientes datos son necesarios para completar la logística del evento:</p>
             <ul class="checklist">
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>Nombre completo de los papás de Clara Susana</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>Nombre completo de los papás</s> - <strong>María de la Luz Torres Jiménez y Gilberto Antonio Palomares Torres</strong></span>
                 </li>
                 <li>
                     <i class="fas fa-circle" style="color: #ff9800;"></i>
@@ -459,31 +491,31 @@
                 </li>
                 <li>
                     <i class="fas fa-check-circle" style="color: #4caf50;"></i>
-                    <span><s>Templo para la misa</s> - Parroquia del Señor del Perdón de Ibarrilla</span>
+                    <span><s>Lugar de la misa</s> - Quinta Las Palmas, Bulevar Ibarrilla</span>
                 </li>
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>Hora de la misa</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>Hora de la misa</s> - <strong>2:00 PM</strong></span>
                 </li>
                 <li>
                     <i class="fas fa-check-circle" style="color: #4caf50;"></i>
                     <span><s>Salón para la recepción</s> - Canal de Sardaneta 204</span>
                 </li>
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>Hora de inicio y fin de la recepción</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>Hora de inicio y fin de la recepción</s> - <strong>4:00 PM – 2:00 AM</strong></span>
                 </li>
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>Protocolo del evento (hora del vals, comida, brindis, etc.)</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>Protocolo del evento</s> - Comida 4:30-6:30 PM | Vals 7:00 PM | DJ 4-9 PM | Grupo 10 PM-2 AM | Mariachis 9-10 PM</span>
                 </li>
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>¿DJ o Banda en vivo?</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>DJ o Banda en vivo</s> - <strong>DJ + Grupo en vivo + Mariachis</strong></span>
                 </li>
                 <li>
-                    <i class="fas fa-circle" style="color: #ff9800;"></i>
-                    <span>¿Sorpresas especiales programadas?</span>
+                    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                    <span><s>Sorpresas especiales</s> - <strong>Mariachis 9:00-10:00 PM</strong></span>
                 </li>
                 <li>
                     <i class="fas fa-circle" style="color: #ff9800;"></i>
