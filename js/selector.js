@@ -27,7 +27,12 @@ const photos = [
     "imagenes/DSC_2886.webp","imagenes/DSC_2887.webp","imagenes/DSC_2888.webp","imagenes/DSC_2889.webp","imagenes/DSC_2890.webp",
     "imagenes/DSC_2891.webp","imagenes/DSC_2892.webp","imagenes/DSC_2893.webp","imagenes/DSC_2894.webp","imagenes/DSC_2895.webp",
     "imagenes/DSC_2896.webp","imagenes/DSC_2897.webp","imagenes/DSC_2898.webp","imagenes/DSC_2899.webp","imagenes/DSC_2900.webp",
-    "imagenes/DSC_2901.webp","imagenes/DSC_2902.webp","imagenes/DSC_2903.webp","imagenes/DSC_2904.webp"
+    "imagenes/DSC_2901.webp","imagenes/DSC_2902.webp","imagenes/DSC_2903.webp","imagenes/DSC_2904.webp",
+    "imagenes/IMG_3451.webp","imagenes/IMG_3452.webp","imagenes/IMG_3453.webp","imagenes/IMG_3454.webp","imagenes/IMG_3455.webp",
+    "imagenes/IMG_3456.webp","imagenes/IMG_3457.webp","imagenes/IMG_3458.webp","imagenes/IMG_3459.webp","imagenes/IMG_3460.webp",
+    "imagenes/IMG_3461.webp","imagenes/IMG_3462.webp","imagenes/IMG_3463.webp","imagenes/IMG_3464.webp","imagenes/IMG_3465.webp",
+    "imagenes/IMG_3466.webp","imagenes/IMG_3467.webp","imagenes/IMG_3470.webp","imagenes/IMG_3471.webp","imagenes/IMG_3472.webp",
+    "imagenes/IMG_3473.webp"
 ];
 
 const STORAGE_KEY = 'xv_anos_clara_susana_photo_selections';
