@@ -2,7 +2,32 @@
 // GLOBAL VARIABLES - XV Años Clara Susana
 // ========================================
 const photos = [
-    // Las fotos se agregarán después del evento (28 de marzo de 2026)
+    "imagenes/DSC_2776.webp","imagenes/DSC_2777.webp","imagenes/DSC_2778.webp","imagenes/DSC_2779.webp","imagenes/DSC_2780.webp",
+    "imagenes/DSC_2781.webp","imagenes/DSC_2782.webp","imagenes/DSC_2783.webp","imagenes/DSC_2784.webp","imagenes/DSC_2785.webp",
+    "imagenes/DSC_2786.webp","imagenes/DSC_2787.webp","imagenes/DSC_2788.webp","imagenes/DSC_2789.webp","imagenes/DSC_2790.webp",
+    "imagenes/DSC_2791.webp","imagenes/DSC_2792.webp","imagenes/DSC_2793.webp","imagenes/DSC_2794.webp","imagenes/DSC_2795.webp",
+    "imagenes/DSC_2796.webp","imagenes/DSC_2797.webp","imagenes/DSC_2798.webp","imagenes/DSC_2799.webp","imagenes/DSC_2800.webp",
+    "imagenes/DSC_2801.webp","imagenes/DSC_2802.webp","imagenes/DSC_2803.webp","imagenes/DSC_2804.webp","imagenes/DSC_2805.webp",
+    "imagenes/DSC_2806.webp","imagenes/DSC_2807.webp","imagenes/DSC_2808.webp","imagenes/DSC_2809.webp","imagenes/DSC_2810.webp",
+    "imagenes/DSC_2811.webp","imagenes/DSC_2812.webp","imagenes/DSC_2813.webp","imagenes/DSC_2814.webp","imagenes/DSC_2815.webp",
+    "imagenes/DSC_2816.webp","imagenes/DSC_2817.webp","imagenes/DSC_2818.webp","imagenes/DSC_2819.webp","imagenes/DSC_2820.webp",
+    "imagenes/DSC_2821.webp","imagenes/DSC_2822.webp","imagenes/DSC_2823.webp","imagenes/DSC_2824.webp","imagenes/DSC_2825.webp",
+    "imagenes/DSC_2826.webp","imagenes/DSC_2827.webp","imagenes/DSC_2828.webp","imagenes/DSC_2829.webp","imagenes/DSC_2830.webp",
+    "imagenes/DSC_2831.webp","imagenes/DSC_2832.webp","imagenes/DSC_2833.webp","imagenes/DSC_2834.webp","imagenes/DSC_2835.webp",
+    "imagenes/DSC_2836.webp","imagenes/DSC_2837.webp","imagenes/DSC_2838.webp","imagenes/DSC_2839.webp","imagenes/DSC_2840.webp",
+    "imagenes/DSC_2841.webp","imagenes/DSC_2842.webp","imagenes/DSC_2843.webp","imagenes/DSC_2844.webp","imagenes/DSC_2845.webp",
+    "imagenes/DSC_2846.webp","imagenes/DSC_2847.webp","imagenes/DSC_2848.webp","imagenes/DSC_2849.webp","imagenes/DSC_2850.webp",
+    "imagenes/DSC_2851.webp","imagenes/DSC_2852.webp","imagenes/DSC_2853.webp","imagenes/DSC_2854.webp","imagenes/DSC_2855.webp",
+    "imagenes/DSC_2856.webp","imagenes/DSC_2857.webp","imagenes/DSC_2858.webp","imagenes/DSC_2859.webp","imagenes/DSC_2860.webp",
+    "imagenes/DSC_2861.webp","imagenes/DSC_2862.webp","imagenes/DSC_2863.webp","imagenes/DSC_2864.webp","imagenes/DSC_2865.webp",
+    "imagenes/DSC_2866.webp","imagenes/DSC_2867.webp","imagenes/DSC_2868.webp","imagenes/DSC_2869.webp","imagenes/DSC_2870.webp",
+    "imagenes/DSC_2871.webp","imagenes/DSC_2872.webp","imagenes/DSC_2873.webp","imagenes/DSC_2874.webp","imagenes/DSC_2875.webp",
+    "imagenes/DSC_2876.webp","imagenes/DSC_2877.webp","imagenes/DSC_2878.webp","imagenes/DSC_2879.webp","imagenes/DSC_2880.webp",
+    "imagenes/DSC_2881.webp","imagenes/DSC_2882.webp","imagenes/DSC_2883.webp","imagenes/DSC_2884.webp","imagenes/DSC_2885.webp",
+    "imagenes/DSC_2886.webp","imagenes/DSC_2887.webp","imagenes/DSC_2888.webp","imagenes/DSC_2889.webp","imagenes/DSC_2890.webp",
+    "imagenes/DSC_2891.webp","imagenes/DSC_2892.webp","imagenes/DSC_2893.webp","imagenes/DSC_2894.webp","imagenes/DSC_2895.webp",
+    "imagenes/DSC_2896.webp","imagenes/DSC_2897.webp","imagenes/DSC_2898.webp","imagenes/DSC_2899.webp","imagenes/DSC_2900.webp",
+    "imagenes/DSC_2901.webp","imagenes/DSC_2902.webp","imagenes/DSC_2903.webp","imagenes/DSC_2904.webp"
 ];
 
 const STORAGE_KEY = 'xv_anos_clara_susana_photo_selections';
