@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Selector de Fotos - XV Años Clara Susana</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,10 +84,12 @@
 
     <!-- Modal -->
     <div class="modal" id="photoModal">
+        <!-- Botones fuera del scroll para que siempre sean visibles en iOS -->
+        <button class="modal-nav-btn modal-prev" id="btnPrevPhoto">&#10094;</button>
+        <button class="modal-nav-btn modal-next" id="btnNextPhoto">&#10095;</button>
+
         <div class="modal-content">
             <span class="modal-close">&times;</span>
-            <button class="modal-nav-btn modal-prev" id="btnPrevPhoto">&#10094;</button>
-            <button class="modal-nav-btn modal-next" id="btnNextPhoto">&#10095;</button>
 
             <div class="modal-body">
                 <div class="modal-image-container">

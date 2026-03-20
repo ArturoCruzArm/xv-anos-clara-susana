@@ -1156,7 +1156,7 @@ body {
    MODAL NAVIGATION BUTTONS
    ======================================== */
 .modal-nav-btn {
-    position: absolute;
+    position: fixed; /* Fixed para no desaparecer al hacer scroll en iOS */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.7);
@@ -1167,15 +1167,20 @@ body {
     border-radius: 50%;
     font-size: 2rem;
     cursor: pointer;
-    display: flex;
+    display: none; /* Oculto por defecto */
     align-items: center;
     justify-content: center;
-    z-index: 1000;
-    transition: all 0.3s ease;
+    z-index: 1100;
+    transition: background 0.3s ease;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
-    min-width: 44px; /* Tamaño mínimo táctil recomendado */
+    min-width: 44px;
     min-height: 44px;
+}
+
+/* Solo visible cuando el modal está activo */
+.modal.active .modal-nav-btn {
+    display: flex;
 }
 
 .modal-nav-btn:hover {
