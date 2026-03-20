@@ -45,6 +45,8 @@ const COSTO_FOTO_ADICIONAL = 15; // $15 MXN por foto adicional
 let photoSelections = {};
 let currentPhotoIndex = null;
 let currentFilter = 'all';
+let touchStartX = 0;
+let touchStartY = 0;
 
 // ========================================
 // LOCAL STORAGE FUNCTIONS
@@ -549,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Close modal on outside click
+    // Close modal on outside click + swipe táctil para Android
     const photoModal = document.getElementById('photoModal');
     if (photoModal) {
         photoModal.addEventListener('click', (e) => {
@@ -557,6 +559,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeModal();
             }
         });
+
+        // Swipe horizontal para navegar fotos en móvil
+        photoModal.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        photoModal.addEventListener('touchend', (e) => {
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            const deltaY = e.changedTouches[0].clientY - touchStartY;
+            // Solo swipe horizontal con suficiente distancia
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    navigatePhoto('prev');
+                } else {
+                    navigatePhoto('next');
+                }
+            }
+        }, { passive: true });
     }
 
     // Navigation buttons
