@@ -383,6 +383,49 @@ function updateNavigationButtons() {
     }
 }
 
+function updateCard(index) {
+    const card = document.querySelector(`.photo-card[data-index="${index}"]`);
+    if (!card) return;
+
+    const selection = photoSelections[index] || {};
+    const hasAny = selection.impresion || selection.invitacion || selection.descartada;
+
+    // Recalcular clases de color
+    card.className = 'photo-card';
+    if (selection.descartada) {
+        card.classList.add('has-descartada');
+    } else {
+        const cats = [];
+        if (selection.impresion) cats.push('impresion');
+        if (selection.invitacion) cats.push('invitacion');
+        if (cats.length > 1) card.classList.add('has-multiple');
+        else if (cats.length === 1) card.classList.add(`has-${cats[0]}`);
+    }
+
+    // Actualizar badges sin tocar el <img>
+    const existing = card.querySelector('.photo-badges');
+    if (existing) existing.remove();
+    if (hasAny) {
+        const badges = document.createElement('div');
+        badges.className = 'photo-badges';
+        if (selection.impresion) badges.innerHTML += '<span class="badge badge-impresion">📸 Impresión</span>';
+        if (selection.invitacion) badges.innerHTML += '<span class="badge badge-invitacion">💌 Invitación</span>';
+        if (selection.descartada) badges.innerHTML += '<span class="badge badge-descartada">❌ Descartada</span>';
+        card.appendChild(badges);
+    }
+
+    // Aplicar filtro actual
+    let show = false;
+    switch (currentFilter) {
+        case 'all': show = true; break;
+        case 'impresion': show = selection.impresion === true; break;
+        case 'invitacion': show = selection.invitacion === true; break;
+        case 'descartada': show = selection.descartada === true; break;
+        case 'sin-clasificar': show = !selection.impresion && !selection.invitacion && !selection.descartada; break;
+    }
+    card.classList.toggle('hidden', !show);
+}
+
 function saveModalSelection() {
     if (currentPhotoIndex === null) return;
 
@@ -403,7 +446,7 @@ function saveModalSelection() {
     }
 
     saveSelections();
-    renderGallery();
+    updateCard(currentPhotoIndex);   // solo actualiza esa tarjeta, sin recargar imágenes
     updateStats();
     updateFilterButtons();
     closeModal();
