@@ -1,4 +1,4 @@
-const CACHE_SHELL = 'xv-shell-v1';
+const CACHE_SHELL = 'xv-shell-v2';
 const CACHE_IMAGES = 'xv-images-v1';
 
 self.addEventListener('install', event => {
@@ -14,8 +14,8 @@ self.addEventListener('install', event => {
             ])
         )
     );
-    self.skipWaiting();
 });
+
 
 self.addEventListener('activate', event => {
     event.waitUntil(
@@ -27,7 +27,6 @@ self.addEventListener('activate', event => {
             )
         )
     );
-    self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {

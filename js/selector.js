@@ -354,12 +354,8 @@ function openModal(index) {
     modal.classList.add('active');
     updateNavigationButtons();
 
-    scrollPositionBeforeModal = window.scrollY;
     modalOpen = true;
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollPositionBeforeModal}px`;
-    document.body.style.width = '100%';
 }
 
 function closeModal() {
@@ -367,14 +363,7 @@ function closeModal() {
     modal.classList.remove('active');
 
     document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
     modalOpen = false;
-    document.documentElement.scrollTop = scrollPositionBeforeModal;
-    document.body.scrollTop = scrollPositionBeforeModal;
-    window.scrollTo(0, scrollPositionBeforeModal);
-    try { localStorage.setItem(KEY_SCROLL, scrollPositionBeforeModal); } catch (e) {}
 
     currentPhotoIndex = null;
 }
