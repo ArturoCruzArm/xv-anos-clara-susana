@@ -327,8 +327,10 @@ function closeModal() {
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    window.scrollTo({ top: scrollPositionBeforeModal, behavior: 'instant' });
     modalOpen = false;
+    document.documentElement.scrollTop = scrollPositionBeforeModal;
+    document.body.scrollTop = scrollPositionBeforeModal;
+    window.scrollTo(0, scrollPositionBeforeModal);
     try { localStorage.setItem(KEY_SCROLL, scrollPositionBeforeModal); } catch (e) {}
 
     currentPhotoIndex = null;
