@@ -36,6 +36,9 @@ const photos = [
 ];
 
 const STORAGE_KEY = 'xv_anos_clara_susana_photo_selections';
+const KEY_FILTER   = 'xv_filter';
+const KEY_SCROLL   = 'xv_scroll';
+const KEY_LAST     = 'xv_last_photo';
 const LIMITES = {
     impresion: 200,
     invitacion: null
@@ -48,6 +51,7 @@ let currentFilter = 'all';
 let touchStartX = 0;
 let touchStartY = 0;
 let scrollPositionBeforeModal = 0;
+let scrollSaveTimer = null;
 
 // ========================================
 // LOCAL STORAGE FUNCTIONS
@@ -257,6 +261,7 @@ function setFilter(filter) {
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
+    try { localStorage.setItem(KEY_FILTER, filter); } catch (e) {}
 }
 
 function updateFilterButtons() {
@@ -280,6 +285,7 @@ function updateFilterButtons() {
 // ========================================
 function openModal(index) {
     currentPhotoIndex = index;
+    try { localStorage.setItem(KEY_LAST, index); } catch (e) {}
     const modal = document.getElementById('photoModal');
     const modalImageContainer = document.querySelector('.modal-image-container');
     const modalPhotoNumber = document.getElementById('modalPhotoNumber');
@@ -570,6 +576,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStats();
     updateFilterButtons();
 
+    // Restaurar filtro y scroll de la sesión anterior
+    const savedFilter = localStorage.getItem(KEY_FILTER);
+    if (savedFilter) setFilter(savedFilter);
+    const savedScroll = parseInt(localStorage.getItem(KEY_SCROLL) || '0');
+    if (savedScroll > 0) {
+        requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, savedScroll)));
+    }
+
     // Filter buttons
     const btnFilterAll = document.getElementById('btnFilterAll');
     const btnFilterImpresion = document.getElementById('btnFilterImpresion');
@@ -660,19 +674,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('Selector de fotos inicializado - XV Años Clara Susana');
-    console.log(`Total de fotos: ${photos.length}`);
 });
 
-// Auto-save on visibility change
+// Guardar scroll con debounce
+window.addEventListener('scroll', () => {
+    clearTimeout(scrollSaveTimer);
+    scrollSaveTimer = setTimeout(() => {
+        try { localStorage.setItem(KEY_SCROLL, window.scrollY); } catch (e) {}
+    }, 300);
+}, { passive: true });
+
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-        console.log('Página oculta - guardando selecciones...');
         saveSelections();
+        try { localStorage.setItem(KEY_SCROLL, window.scrollY); } catch (e) {}
     }
 });
 
-// Before unload
-window.addEventListener('beforeunload', (e) => {
+window.addEventListener('beforeunload', () => {
     saveSelections();
+    try { localStorage.setItem(KEY_SCROLL, window.scrollY); } catch (e) {}
 });
+
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
