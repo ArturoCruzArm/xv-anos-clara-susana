@@ -52,6 +52,7 @@ let touchStartX = 0;
 let touchStartY = 0;
 let scrollPositionBeforeModal = 0;
 let scrollSaveTimer = null;
+let modalOpen = false;
 
 // ========================================
 // LOCAL STORAGE FUNCTIONS
@@ -310,8 +311,8 @@ function openModal(index) {
     modal.classList.add('active');
     updateNavigationButtons();
 
-    // Fix iOS Safari: overflow:hidden en body no funciona, usar position:fixed
     scrollPositionBeforeModal = window.scrollY;
+    modalOpen = true;
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollPositionBeforeModal}px`;
@@ -322,12 +323,13 @@ function closeModal() {
     const modal = document.getElementById('photoModal');
     modal.classList.remove('active');
 
-    // Restaurar scroll — fix iOS Safari
     document.body.style.overflow = '';
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    window.scrollTo(0, scrollPositionBeforeModal);
+    window.scrollTo({ top: scrollPositionBeforeModal, behavior: 'instant' });
+    modalOpen = false;
+    try { localStorage.setItem(KEY_SCROLL, scrollPositionBeforeModal); } catch (e) {}
 
     currentPhotoIndex = null;
 }
@@ -678,6 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Guardar scroll con debounce
 window.addEventListener('scroll', () => {
+    if (modalOpen) return;
     clearTimeout(scrollSaveTimer);
     scrollSaveTimer = setTimeout(() => {
         try { localStorage.setItem(KEY_SCROLL, window.scrollY); } catch (e) {}
