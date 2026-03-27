@@ -62,7 +62,6 @@ function loadSelections() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             photoSelections = JSON.parse(saved);
-            console.log('Selecciones cargadas desde localStorage:', photoSelections);
         }
     } catch (error) {
         console.error('Error cargando selecciones:', error);
@@ -73,7 +72,6 @@ function loadSelections() {
 function saveSelections() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(photoSelections));
-        console.log('Selecciones guardadas en localStorage');
     } catch (error) {
         console.error('Error guardando selecciones:', error);
         showToast('Error al guardar. Verifica el espacio del navegador.', 'error');
@@ -339,10 +337,8 @@ function openModal(index) {
 
     modalPhotoNumber.textContent = displayNumber;
 
-    modalImageContainer.innerHTML = `
-        <img id="modalImage" src="${photo}" alt="${displayNumber}">
-        <div class="modal-photo-number" id="modalPhotoNumber">${displayNumber}</div>
-    `;
+    document.getElementById('modalImage').src = photo;
+    document.getElementById('modalImage').alt = displayNumber;
 
     const selection = photoSelections[index] || {};
 
@@ -572,15 +568,7 @@ function copyToClipboard() {
     navigator.clipboard.writeText(summary).then(() => {
         showToast('Resumen copiado al portapapeles', 'success');
     }).catch(() => {
-        const textarea = document.createElement('textarea');
-        textarea.value = summary;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        showToast('Resumen copiado al portapapeles', 'success');
+        showToast('No se pudo copiar. Selecciona el texto manualmente.', 'error');
     });
 }
 

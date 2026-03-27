@@ -1,4 +1,4 @@
-const CACHE_SHELL = 'xv-shell-v2';
+const CACHE_SHELL = 'xv-shell-v3';
 const CACHE_IMAGES = 'xv-images-v1';
 
 self.addEventListener('install', event => {
