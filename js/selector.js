@@ -130,7 +130,12 @@ async function loadSelections() {
                 if (row.impresion || row.invitacion || row.descartada)
                     sb[row.foto_index] = { impresion: row.impresion, invitacion: row.invitacion, descartada: row.descartada };
             });
-            photoSelections = sb;
+            // Merge: local selections made during async load win over Supabase
+            const merged = {...sb};
+            Object.entries(photoSelections).forEach(([idx, sel]) => {
+                if (sel.impresion || sel.invitacion || sel.descartada) merged[idx] = sel;
+            });
+            photoSelections = merged;
             try { localStorage.setItem(STORAGE_KEY, JSON.stringify(photoSelections)); } catch(e) {}
             renderGallery(); setupLazyLoad(); updateStats(); updateFilterButtons();
         }
@@ -152,9 +157,10 @@ async function saveSelections() {
 }
 
 async function sbSyncSelections() {
+    const snapshot = {...photoSelections}; // snapshot BEFORE any await
     const evento_id = await sbGetEventoId();
     if (!evento_id) return;
-    const rows = Object.entries(photoSelections).map(([idx, sel]) => ({
+    const rows = Object.entries(snapshot).map(([idx, sel]) => ({
         evento_id, session_id: SESSION_ID, foto_index: parseInt(idx),
         impresion: sel.impresion || false, invitacion: sel.invitacion || false, descartada: sel.descartada || false,
     }));
