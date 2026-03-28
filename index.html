@@ -14,8 +14,152 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css">
     <link rel="stylesheet" href="css/index.css?v=1">
+    <style>
+    /* ── INTRO CINEMÁTICA ── */
+    #intro-overlay {
+        position: fixed; inset: 0; z-index: 9999;
+        background: #000;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    #intro-overlay.fade-out {
+        animation: introFadeOut 1.2s ease forwards;
+    }
+    @keyframes introFadeOut {
+        to { opacity: 0; pointer-events: none; }
+    }
+
+    /* Grano de película */
+    #intro-overlay::before {
+        content: '';
+        position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+        opacity: 0.35;
+        animation: grain 0.15s steps(1) infinite;
+        pointer-events: none;
+    }
+    @keyframes grain {
+        0%,100% { transform: translate(0,0); }
+        10%  { transform: translate(-2px, 1px); }
+        20%  { transform: translate(2px, -1px); }
+        30%  { transform: translate(-1px, 2px); }
+        40%  { transform: translate(1px, -2px); }
+        50%  { transform: translate(-2px, -1px); }
+        60%  { transform: translate(2px, 1px); }
+        70%  { transform: translate(-1px, -2px); }
+        80%  { transform: translate(1px, 2px); }
+        90%  { transform: translate(-2px, 2px); }
+    }
+
+    /* Barras letterbox */
+    .intro-bar {
+        position: absolute; left: 0; right: 0; height: 80px;
+        background: #000; z-index: 2;
+        transition: height 1s ease;
+    }
+    .intro-bar.top    { top: 0; }
+    .intro-bar.bottom { bottom: 0; }
+    #intro-overlay.fade-out .intro-bar { height: 0; }
+
+    /* Contenido central */
+    .intro-content {
+        position: relative; z-index: 3;
+        text-align: center; color: #fff;
+        padding: 20px;
+        max-width: 600px;
+    }
+
+    .intro-studio {
+        font-family: 'Lato', sans-serif;
+        font-size: clamp(0.65rem, 2vw, 0.85rem);
+        letter-spacing: 0.5em;
+        text-transform: uppercase;
+        color: #aaa;
+        opacity: 0;
+        animation: introFadeIn 1s ease 0.8s forwards;
+    }
+    .intro-presents {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        letter-spacing: 0.2em;
+        font-style: italic;
+        color: #ccc;
+        margin: 6px 0 30px;
+        opacity: 0;
+        animation: introFadeIn 1s ease 1.6s forwards;
+    }
+    .intro-line {
+        width: 0; height: 1px; background: #dc2626;
+        margin: 18px auto;
+        animation: introLine 1.2s ease 2.2s forwards;
+    }
+    @keyframes introLine {
+        to { width: 120px; }
+    }
+    .intro-name {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 7vw, 3.8rem);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: #fff;
+        line-height: 1.1;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: introSlideUp 1.2s cubic-bezier(.16,1,.3,1) 2.4s forwards;
+    }
+    .intro-surname {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1rem, 3.5vw, 1.6rem);
+        font-weight: 300;
+        letter-spacing: 0.35em;
+        color: #e5e5e5;
+        text-transform: uppercase;
+        margin-top: 4px;
+        opacity: 0;
+        animation: introFadeIn 1s ease 3.2s forwards;
+    }
+    .intro-xv {
+        font-family: 'Lato', sans-serif;
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+        color: #dc2626;
+        margin-top: 22px;
+        opacity: 0;
+        animation: introFadeIn 1s ease 3.8s forwards;
+    }
+    .intro-skip {
+        position: absolute; bottom: 90px; right: 24px;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.7rem; letter-spacing: 0.2em;
+        color: #555; text-transform: uppercase;
+        z-index: 4;
+        animation: introFadeIn 1.5s ease 1s forwards;
+        opacity: 0;
+    }
+
+    @keyframes introFadeIn  { to { opacity: 1; } }
+    @keyframes introSlideUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
+    <!-- ── INTRO CINEMÁTICA ── -->
+    <div id="intro-overlay" role="presentation" aria-hidden="true">
+        <div class="intro-bar top"></div>
+        <div class="intro-bar bottom"></div>
+        <div class="intro-content">
+            <p class="intro-studio">Producciones Foro 7</p>
+            <p class="intro-presents">presenta</p>
+            <div class="intro-line"></div>
+            <h1 class="intro-name">Clara Susana</h1>
+            <p class="intro-surname">Palomares Torres</p>
+            <p class="intro-xv">XV &nbsp; Años</p>
+        </div>
+        <p class="intro-skip">Toca para continuar</p>
+    </div>
+
     <!-- Floating Elements -->
     <div class="floating-element" style="left: 10%; animation-delay: 0s;">🦋</div>
     <div class="floating-element" style="left: 30%; animation-delay: 3s;">🌸</div>
@@ -272,6 +416,40 @@
                 prompt('Copia este enlace:', url);
             });
         }
+    </script>
+
+    <script>
+    // ── INTRO CINEMÁTICA ──
+    (function() {
+        var overlay = document.getElementById('intro-overlay');
+        if (!overlay) return;
+
+        // Evitar mostrar la intro en visitas recurrentes el mismo día
+        var today = new Date().toDateString();
+        if (localStorage.getItem('foro7_intro_clara') === today) {
+            overlay.style.display = 'none';
+            return;
+        }
+
+        function dismissIntro() {
+            overlay.classList.add('fade-out');
+            setTimeout(function() { overlay.style.display = 'none'; }, 1200);
+            localStorage.setItem('foro7_intro_clara', today);
+        }
+
+        // Auto-cerrar después de 7.5 segundos
+        var autoTimer = setTimeout(dismissIntro, 7500);
+
+        // Cerrar al tocar/clic
+        overlay.addEventListener('click', function() {
+            clearTimeout(autoTimer);
+            dismissIntro();
+        });
+        overlay.addEventListener('touchend', function() {
+            clearTimeout(autoTimer);
+            dismissIntro();
+        }, { passive: true });
+    })();
     </script>
 </body>
 </html>
