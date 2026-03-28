@@ -1,4 +1,42 @@
 // ========================================
+// SUPABASE CONFIG
+// ========================================
+const SUPABASE_URL  = 'https://nzpujmlienzfetqcgsxz.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56cHVqbWxpZW56ZmV0cWNnc3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2ODYzMzYsImV4cCI6MjA5MDI2MjMzNn0.xl3lsb-KYj5tVLKTnzpbsdEGoV9ySnswH4eyRuyEH1s';
+const EVENTO_SLUG   = 'xv-anos-clara-susana';
+const SB_HEADERS    = { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' };
+
+function getSessionId() {
+    const KEY = 'foro7_sid';
+    let sid = localStorage.getItem(KEY);
+    if (!sid) { sid = crypto.randomUUID(); localStorage.setItem(KEY, sid); }
+    return sid;
+}
+const SESSION_ID = getSessionId();
+let eventoIdCache = null;
+let sbDisponible  = true;
+
+async function sbGetEventoId() {
+    if (eventoIdCache) return eventoIdCache;
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/eventos?slug=eq.${EVENTO_SLUG}&select=id&limit=1`, { headers: SB_HEADERS });
+    const [ev] = await r.json();
+    eventoIdCache = ev?.id || null;
+    return eventoIdCache;
+}
+
+async function sbRegistrarVisita(pagina = 'selector') {
+    try {
+        const evento_id = await sbGetEventoId();
+        if (!evento_id) return;
+        await fetch(`${SUPABASE_URL}/rest/v1/visitas`, {
+            method: 'POST',
+            headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ evento_id, pagina, session_id: SESSION_ID })
+        });
+    } catch(e) {}
+}
+
+// ========================================
 // GLOBAL VARIABLES - XV Años Clara Susana
 // ========================================
 const photos = [
@@ -35,15 +73,26 @@ const photos = [
     "imagenes/IMG_3473.webp"
 ];
 
+// ── Configuración del evento ──
+const CONFIG = {
+    slug:               'xv-anos-clara-susana',
+    nombre:             'Clara Susana Palomares Torres',
+    telefono:           '521314124957',
+    fechaEvento:        new Date(2026, 2, 28, 17, 0, 0),
+    limiteImpresion:    200,
+    limiteInvitacion:   null,
+    costoFotoAdicional: 15,
+};
+
 const STORAGE_KEY = 'xv_anos_clara_susana_photo_selections';
 const KEY_FILTER   = 'xv_filter';
 const KEY_SCROLL   = 'xv_scroll';
 const KEY_LAST     = 'xv_last_photo';
 const LIMITES = {
-    impresion: 200,
-    invitacion: null
+    impresion: CONFIG.limiteImpresion,
+    invitacion: CONFIG.limiteInvitacion
 };
-const COSTO_FOTO_ADICIONAL = 15; // $15 MXN por foto adicional
+const COSTO_FOTO_ADICIONAL = CONFIG.costoFotoAdicional;
 
 let photoSelections = {};
 let currentPhotoIndex = null;
@@ -57,25 +106,64 @@ let modalOpen = false;
 // ========================================
 // LOCAL STORAGE FUNCTIONS
 // ========================================
-function loadSelections() {
+async function loadSelections() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            photoSelections = JSON.parse(saved);
+        if (saved) photoSelections = JSON.parse(saved);
+    } catch(e) { photoSelections = {}; }
+
+    if (!sbDisponible) return;
+    try {
+        const evento_id = await sbGetEventoId();
+        if (!evento_id) { sbDisponible = false; return; }
+
+        const r = await fetch(
+            `${SUPABASE_URL}/rest/v1/selecciones?evento_id=eq.${evento_id}&session_id=eq.${SESSION_ID}&select=foto_index,impresion,invitacion,descartada`,
+            { headers: SB_HEADERS }
+        );
+        if (!r.ok) throw new Error(r.status);
+        const rows = await r.json();
+
+        if (rows.length > 0) {
+            const sb = {};
+            rows.forEach(row => {
+                if (row.impresion || row.invitacion || row.descartada)
+                    sb[row.foto_index] = { impresion: row.impresion, invitacion: row.invitacion, descartada: row.descartada };
+            });
+            photoSelections = sb;
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(photoSelections)); } catch(e) {}
+            renderGallery(); setupLazyLoad(); updateStats(); updateFilterButtons();
         }
-    } catch (error) {
-        console.error('Error cargando selecciones:', error);
-        photoSelections = {};
+        sbRegistrarVisita('selector');
+    } catch(e) {
+        console.warn('[Supabase] Usando localStorage:', e.message);
+        sbDisponible = false;
     }
 }
 
-function saveSelections() {
+async function saveSelections() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(photoSelections));
-    } catch (error) {
-        console.error('Error guardando selecciones:', error);
+    } catch(e) {
         showToast('Error al guardar. Verifica el espacio del navegador.', 'error');
     }
+    if (!sbDisponible) return;
+    sbSyncSelections().catch(e => console.warn('[Supabase] Sync error:', e.message));
+}
+
+async function sbSyncSelections() {
+    const evento_id = await sbGetEventoId();
+    if (!evento_id) return;
+    const rows = Object.entries(photoSelections).map(([idx, sel]) => ({
+        evento_id, session_id: SESSION_ID, foto_index: parseInt(idx),
+        impresion: sel.impresion || false, invitacion: sel.invitacion || false, descartada: sel.descartada || false,
+    }));
+    if (rows.length === 0) return;
+    await fetch(`${SUPABASE_URL}/rest/v1/selecciones`, {
+        method: 'POST',
+        headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify(rows)
+    });
 }
 
 function clearAllSelections() {
@@ -127,11 +215,11 @@ function updateStats() {
     const extraCostDisplay = document.getElementById('extraCostDisplay');
     if (extraCostDisplay) {
         if (fotosAdicionales > 0) {
-            extraCostDisplay.classList.add('visible');
+            extraCostDisplay.style.display = 'block';
             document.getElementById('extraCostAmount').textContent = `$${costoExtra} MXN`;
             document.getElementById('extraCostDetail').textContent = `${fotosAdicionales} foto${fotosAdicionales > 1 ? 's' : ''} adicional${fotosAdicionales > 1 ? 'es' : ''} x $${COSTO_FOTO_ADICIONAL}`;
         } else {
-            extraCostDisplay.classList.remove('visible');
+            extraCostDisplay.style.display = 'none';
         }
     }
 
@@ -595,11 +683,11 @@ function showToast(message, type = 'success') {
 // EVENT LISTENERS
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
-    loadSelections();
     renderGallery();
     setupLazyLoad();
     updateStats();
     updateFilterButtons();
+    loadSelections();
 
     // Restaurar filtro y scroll de la sesión anterior
     const savedFilter = localStorage.getItem(KEY_FILTER);

@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css">
     <link rel="stylesheet" href="css/selector.css?v=2">
 </head>
 <body>
@@ -57,6 +58,11 @@
                         <span class="stat-count" id="countSinClasificar">0</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Aviso costo adicional (aparece si se superan las 200 fotos) -->
+            <div id="extraCostDisplay" style="display:none; background:rgba(255,152,0,0.15); border:1.5px solid #ff9800; border-radius:10px; padding:10px 16px; margin:10px 0; text-align:center; color:#ff9800;">
+                ⚠️ Fotos adicionales: <strong id="extraCostDetail"></strong> — Costo extra: <strong id="extraCostAmount"></strong>
             </div>
 
             <div class="action-buttons">
