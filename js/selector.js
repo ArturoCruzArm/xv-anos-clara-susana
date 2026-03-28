@@ -165,7 +165,7 @@ async function sbSyncSelections() {
         impresion: sel.impresion || false, invitacion: sel.invitacion || false, descartada: sel.descartada || false,
     }));
     if (rows.length === 0) return;
-    await fetch(`${SUPABASE_URL}/rest/v1/selecciones`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/selecciones?on_conflict=evento_id,session_id,foto_index`, {
         method: 'POST',
         headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
         body: JSON.stringify(rows)
