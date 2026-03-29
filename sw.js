@@ -1,4 +1,4 @@
-const CACHE_SHELL = 'xv-shell-v3';
+const CACHE_SHELL = 'xv-shell-v4';
 const CACHE_IMAGES = 'xv-images-v1';
 
 self.addEventListener('install', event => {
@@ -32,6 +32,9 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
+    // No interceptar peticiones externas (Supabase, Google Fonts, etc.)
+    if (url.origin !== self.location.origin) return;
+
     if (url.pathname.includes('/imagenes/')) {
         event.respondWith(
             caches.open(CACHE_IMAGES).then(cache =>
@@ -49,7 +52,8 @@ self.addEventListener('fetch', event => {
             fetch(event.request)
                 .then(response => {
                     if (response.ok) {
-                        caches.open(CACHE_SHELL).then(c => c.put(event.request, response.clone()));
+                        const clone = response.clone(); // clonar antes de la rama async
+                        caches.open(CACHE_SHELL).then(c => c.put(event.request, clone));
                     }
                     return response;
                 })
