@@ -271,12 +271,12 @@ const photos = [
 // ── Configuración del evento ──
 const CONFIG = {
     slug:               'xv-anos-clara-susana',
-    nombre:             'Clara Susana Palomares Torres',
-    telefono:           '5214792234731',
-    fechaEvento:        new Date(2026, 2, 28, 17, 0, 0),
+    nombre:             (window.EVENT_CONFIG && window.EVENT_CONFIG.nombre)             || 'Clara Susana Palomares Torres',
+    telefono:           (window.EVENT_CONFIG && window.EVENT_CONFIG.telefono)           || '',
+    fechaEvento:        (window.EVENT_CONFIG && window.EVENT_CONFIG.fechaEvento)        || new Date(2026, 2, 28, 17, 0, 0),
     limiteImpresion:    200,
     limiteInvitacion:   null,
-    costoFotoAdicional: 15,
+    costoFotoAdicional: (window.EVENT_CONFIG && window.EVENT_CONFIG.costoFotoAdicional) || 15,
 };
 
 const STORAGE_KEY = 'xv_anos_clara_susana_photo_selections';
