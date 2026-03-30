@@ -1,4 +1,4 @@
-const CACHE_SHELL = 'xv-shell-v4';
+const CACHE_SHELL = 'xv-shell-v5';
 const CACHE_IMAGES = 'xv-images-v1';
 
 self.addEventListener('install', event => {
@@ -34,6 +34,7 @@ self.addEventListener('fetch', event => {
 
     // No interceptar peticiones externas (Supabase, Google Fonts, etc.)
     if (url.origin !== self.location.origin) return;
+    if (event.request.method !== 'GET') return;
 
     if (url.pathname.includes('/imagenes/')) {
         event.respondWith(
