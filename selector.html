@@ -19,6 +19,18 @@
         <p class="instructions">Selecciona las fotos para impresión</p>
     </header>
 
+    <!-- Video Section -->
+    <section id="video-section" style="max-width:720px;margin:0 auto 2rem;padding:0 1rem;">
+        <h2 style="text-align:center;font-family:'Playfair Display',serif;color:#7c3aed;font-size:1.6rem;margin-bottom:1rem;">🎬 Video del Evento</h2>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(124,58,237,.25);">
+            <iframe id="ytPlayer1"
+                src="https://www.youtube.com/embed/c0846k_imzM?enablejsapi=1&rel=0&loop=1&playlist=c0846k_imzM&vq=hd1080&modestbranding=1"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"
+                allowfullscreen></iframe>
+        </div>
+    </section>
+
     <div class="container">
         <!-- Control Panel -->
         <div class="control-panel">
@@ -132,9 +144,37 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+    var ytPlayer;
+    function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('ytPlayer1', {
+            events: {
+                onReady: function(e) {
+                    e.target.setPlaybackQuality('hd1080');
+                },
+                onStateChange: function(e) {
+                    if (e.data === YT.PlayerState.ENDED) {
+                        e.target.playVideo();
+                    }
+                }
+            }
+        });
+    }
+    </script>
+
     <script>window.EVENT_CONFIG = { telefono: '5214792234731', nombre: 'Clara Susana Palomares Torres', fechaEvento: new Date(2026, 2, 28, 17, 0, 0), costoFotoAdicional: 15 };</script>
     <script src="js/selector.js?v=8"></script>
     <script src="js/visitas.js?v=2"></script>
 <script src="js/foro7-footer.js"></script>
+
+<!-- Banner flotante Foro 7 -->
+<div id="f7-banner" style="position:fixed;bottom:0;left:0;right:0;z-index:500;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Lato',sans-serif;font-size:.8rem;color:rgba(255,255,255,.85);box-shadow:0 -2px 12px rgba(0,0,0,.3);">
+    <span style="font-size:1rem;">📸</span>
+    <span><b>Foro 7</b> · Fotografía y Video · <a href="https://wa.me/5214779203776" target="_blank" style="color:#60a5fa;text-decoration:none;">477-920-3776</a></span>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.1rem;cursor:pointer;margin-left:8px;padding:2px 6px;">✕</button>
+</div>
+
 </body>
 </html>
