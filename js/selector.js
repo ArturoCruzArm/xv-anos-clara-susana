@@ -267,6 +267,11 @@ const photos = [
     "imagenes/IMG_3466.webp","imagenes/IMG_3467.webp","imagenes/IMG_3470.webp","imagenes/IMG_3471.webp","imagenes/IMG_3472.webp",
     "imagenes/IMG_3473.webp"
 ];
+// Thumbnail helper: usa thumb/ en grid para ahorrar RAM en moviles
+function getThumbPath(fullPath) {
+    return fullPath.replace('imagenes/', 'imagenes/thumb/');
+}
+
 
 // ── Configuración del evento ──
 const CONFIG = {
@@ -1104,34 +1109,108 @@ if ('serviceWorker' in navigator) {
 // ========================================
 // DOWNLOAD FUNCTIONS
 // ========================================
-async function downloadCurrentPhoto() {
+function downloadCurrentPhoto() {
     if (currentPhotoIndex === null) return;
-    const url = photos[currentPhotoIndex];
+    var url = photos[currentPhotoIndex];
     if (!url) return;
-    const filename = 'foto-' + (currentPhotoIndex + 1) + '.jpg';
-    showToast('Descargando...', 'success');
-    try {
-        const resp = await fetch(url, { mode: 'cors' });
-        const blob = await resp.blob();
-        let finalBlob = blob;
-        if (!blob.type.includes('jpeg') && !blob.type.includes('jpg')) {
-            const bmp = await createImageBitmap(blob);
-            const canvas = document.createElement('canvas');
-            canvas.width = bmp.width; canvas.height = bmp.height;
-            canvas.getContext('2d').drawImage(bmp, 0, 0);
-            finalBlob = await new Promise(function(res){ canvas.toBlob(res, 'image/jpeg', 0.95); });
+    var filename = 'foto-' + (currentPhotoIndex + 1) + '.jpg';
+    showToast('Preparando descarga...', 'success');
+
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        // Marca de agua diagonal repetida
+        var wmText = 'FORO 7  \u00b7  FOTOGRAF\u00cdA Y VIDEO';
+        var fontSize = Math.max(canvas.width, canvas.height) * 0.035;
+        ctx.save();
+        ctx.font = 'bold ' + fontSize + 'px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+        ctx.lineWidth = fontSize * 0.06;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(-Math.PI / 6);
+        var textW = ctx.measureText(wmText).width;
+        var spacingY = fontSize * 4;
+        var spacingX = textW + fontSize * 2;
+        var diag = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+        for (var y = -diag; y < diag; y += spacingY) {
+            for (var x = -diag; x < diag; x += spacingX) {
+                ctx.strokeText(wmText, x, y);
+                ctx.fillText(wmText, x, y);
+            }
         }
-        const a = document.createElement('a');
-        const objUrl = URL.createObjectURL(finalBlob);
-        a.href = objUrl; a.download = filename;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        setTimeout(function(){ URL.revokeObjectURL(objUrl); }, 2000);
-        sbRegistrarVisita('descarga');
-        showToast('Descargando ' + filename, 'success');
-    } catch(e) {
-        window.open(url, '_blank');
-        showToast('Abriendo foto...', 'success');
-    }
+        ctx.restore();
+
+        canvas.toBlob(function(blob) {
+            var a = document.createElement('a');
+            var objUrl = URL.createObjectURL(blob);
+            a.href = objUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function() { URL.revokeObjectURL(objUrl); }, 3000);
+            sbRegistrarVisita('descarga');
+            showToast('Descargando ' + filename, 'success');
+        }, 'image/jpeg', 0.92);
+    };
+    img.onerror = function() {
+        // Fallback: usar la imagen ya cargada en el modal
+        var modalImg = document.getElementById('modalImage');
+        if (modalImg && modalImg.naturalWidth > 0) {
+            var canvas = document.createElement('canvas');
+            canvas.width = modalImg.naturalWidth;
+            canvas.height = modalImg.naturalHeight;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(modalImg, 0, 0);
+            var wmText = 'FORO 7  \u00b7  FOTOGRAF\u00cdA Y VIDEO';
+            var fontSize = Math.max(canvas.width, canvas.height) * 0.035;
+            ctx.save();
+            ctx.font = 'bold ' + fontSize + 'px sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+            ctx.lineWidth = fontSize * 0.06;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 6);
+            var textW = ctx.measureText(wmText).width;
+            var spacingY = fontSize * 4;
+            var spacingX = textW + fontSize * 2;
+            var diag = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+            for (var y = -diag; y < diag; y += spacingY) {
+                for (var x = -diag; x < diag; x += spacingX) {
+                    ctx.strokeText(wmText, x, y);
+                    ctx.fillText(wmText, x, y);
+                }
+            }
+            ctx.restore();
+            canvas.toBlob(function(blob) {
+                var a = document.createElement('a');
+                var objUrl = URL.createObjectURL(blob);
+                a.href = objUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(function() { URL.revokeObjectURL(objUrl); }, 3000);
+                sbRegistrarVisita('descarga');
+                showToast('Descargando ' + filename, 'success');
+            }, 'image/jpeg', 0.92);
+        } else {
+            window.open(url, '_blank');
+            showToast('Abriendo foto...', 'success');
+        }
+    };
+    img.src = url;
 }
 
 function downloadAndClose() {
